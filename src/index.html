@@ -1,75 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Turnstile &dash; Dummy Login Demo</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/css/bootstrap.min.css" integrity="sha512-siwe/oXMhSjGCwLn+scraPOWrJxHlUgMBMZXdPe2Tnk3I0x3ESCoLz7WZ5NTH6SZrywMY+PB1cjyqJ5jAluCOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" integrity="sha512-5PV92qsds/16vyYIJo3T/As4m2d8b6oWYfoqV+vtizRB6KhF1F9kYzWzQmsO6T3z3QG2Xdhrx7FQ+5R1LiQdUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<style>
-html,
-body {
-  height: 100%;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-body {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #fefefe;
-}
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
 
-.form-signin {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
-}
+        h1 {
+            margin-bottom: 20px;
+        }
 
-.form-signin .checkbox {
-  font-weight: 400;
-}
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
 
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
+        select,
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
 
-.form-signin input[type="text"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-</style>
+        #downloadLink {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<main class="form-signin">
-  <form method="POST" action="/handler">
-    <h2 class="h3 mb-3 fw-normal">Turnstile &dash; Dummy Login Demo</h2>
+    <div class="container">
+        <h1>Video Downloader</h1>
+        <input type="text" id="videoUrl" placeholder="Enter video URL">
+        <select id="platform">
+            <option value="tiktok">TikTok</option>
+            <option value="youtube">YouTube</option>
+            <option value="facebook">Facebook</option>
+            <option value="twitter">Twitter</option>
+        </select>
+        <button id="downloadButton">Download</button>
+        <div id="downloadLink"></div>
+    </div>
 
-    <div class="form-floating">
-      <input type="text" id="user" class="form-control">
-      <label for="user">User name</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" id="pass" class="form-control" autocomplete="off" readonly value="CorrectHorseBatteryStaple">
-      <label for="pass">Password (dummy)</label>
-    </div>
+    <script>
+        const downloadButton = document.getElementById('downloadButton');
+        const downloadLink = document.getElementById('downloadLink');
 
-    <div class="checkbox mb-3">
-      <!-- The following line controls and configures the Turnstile widget. -->
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAAC7AA5SaPI1ViA9" data-theme="light"></div>
-      <!-- end. -->
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted"><a href="https://github.com/cloudflare/turnstile-demo-workers"><i class="bi bi-github"></i> See code</a></p>
-    <p class="mt-5 mb-3 text-muted">Go to the <a href="/index2.html">explicit render demo</a></p>
-  </form>
-</main>
+        downloadButton.addEventListener('click', () => {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const platform = document.getElementById('platform').value;
+            if (platform === 'tiktok') {
+                const videoId = getVideoIdFromTikTokUrl(videoUrl);
+                // ... Logic to generate TikTok download link ...
+            } else if (platform === 'youtube') {
+                const videoId = getVideoIdFromYouTubeUrl(videoUrl);
+                const downloadUrl = `https://www.youtube.com/watch?v=${videoId}`;
+                // ... Logic to generate YouTube download link ...
+            } else if (platform === 'facebook') {
+                const videoId = getVideoIdFromFacebookUrl(videoUrl);
+                const downloadUrl = `https://www.facebook.com/video.php?v=${videoId}`;
+                // ... Logic to generate Facebook download link ...
+            } else if (platform === 'twitter') {
+                const videoId = getVideoIdFromTwitterUrl(videoUrl);
+                const downloadUrl = `https://twitter.com/i/status/${videoId}`;
+                // ... Logic to generate Twitter download link ...
+            }
+        });
+
+        // ... Rest of the JavaScript logic ...
+    </script>
 </body>
 </html>
